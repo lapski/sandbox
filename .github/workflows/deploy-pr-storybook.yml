@@ -1,0 +1,46 @@
+name: Build PR Storybook
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  publish-pr:
+    runs-on: ubuntu-latest
+
+    if: github.event.label.name == 'Build PR Storybook'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: build storybook
+        run: npm run build:storybook
+
+      - run: |
+          echo "PR=${{ github.event.issue.number }}" >> $GITHUB_ENV
+
+      - name: deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages
+          folder: storybook-static/
+          target-folder: "pr-${{ github.event.number }}"
+
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🚀 PR Storybook deployed'
+            })

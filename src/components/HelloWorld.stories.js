@@ -7,7 +7,7 @@ export default {
   component: HelloWorld,
 };
 
-export const Primary = () => ({
+export const Main = () => ({
   components: { HelloWorld },
-  template: '<HelloWorld msg="Hi" />',
+  template: '<HelloWorld msg="Hello" />',
 });

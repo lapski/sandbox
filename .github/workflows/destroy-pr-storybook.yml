@@ -1,0 +1,19 @@
+name: Destroy PR Storybook
+
+# only trigger on pull request closed events
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  destroy-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+        git rm -r --cached ./pr-${{ github.event.number }}
+        git add .
+        git commit -m "chore: remove PR storybook instance"
+        git fetch origin gh-pages
+        git push origin HEAD:gh-pages

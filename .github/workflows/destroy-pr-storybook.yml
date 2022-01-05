@@ -11,9 +11,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - run: |
-        git rm -r --cached ./pr-${{ github.event.number }}
-        git add .
-        git commit -m "chore: remove PR storybook instance"
-        git fetch origin gh-pages
-        git push origin HEAD:gh-pages
+
+      - name: remove pr directory
+        run: |
+          git rm -r --cached ./pr-${PR}
+          git add .
+          git commit -m "chore: remove PR storybook instance"
+          git fetch origin gh-pages
+          git push origin HEAD:gh-pages
+        env:
+          PR: ${{ github.event.number }}

@@ -16,7 +16,7 @@ jobs:
       
       - name: check pr dir existence
         id: check_dir
-        run:
+        run: |
           if [ -d "${PR_DIR}" ]
           then
             echo "::set-output name=pr_dir_exists::true"

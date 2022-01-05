@@ -20,8 +20,10 @@ jobs:
           if [ -d "${PR_DIR}" ]
           then
             echo "::set-output name=pr_dir_exists::true"
+            echo "true"
           else
             echo "::set-output name=pr_dir_exists::false"
+            echo "false"
           fi
         env:
           PR_DIR: pr-${{ github.event.number }}

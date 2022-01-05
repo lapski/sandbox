@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: gh-pages      
+          ref: gh-pages
       
       - name: check pr dir existence
         id: check_dir
@@ -32,7 +32,9 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions"
           git rm -r --cached ./pr-${PR}
+          git status
           git add .
+          git status
           git commit -m "chore: remove PR #${PR} storybook instance"
           git push origin gh-pages
         env:

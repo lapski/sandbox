@@ -11,13 +11,27 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: gh-pages      
+      
+      - name: check pr dir existence
+        id: check_dir
+        run:
+          if [ -d "${PR_DIR}" ]
+          then
+            echo "::set-output name=pr_dir_exists::true"
+          else
+            echo "::set-output name=pr_dir_exists::false"
+          fi
+        env:
+          PR_DIR: pr-${{ github.event.number }}
 
       - name: remove pr directory
+        if: steps.check_dir.outputs.pr_dir_exists == 'true'
         run: |
           git rm -r --cached ./pr-${PR}
           git add .
-          git commit -m "chore: remove PR storybook instance"
-          git fetch origin gh-pages
-          git push origin HEAD:gh-pages
+          git commit -m "chore: remove PR #${PR} storybook instance"
+          git push origin gh-pages
         env:
           PR: ${{ github.event.number }}

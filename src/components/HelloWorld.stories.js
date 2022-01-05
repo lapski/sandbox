@@ -9,5 +9,5 @@ export default {
 
 export const Main = () => ({
   components: { HelloWorld },
-  template: '<HelloWorld msg="Hello" />',
+  template: '<HelloWorld msg="Test 2" />',
 });

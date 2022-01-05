@@ -1,6 +1,5 @@
 name: Destroy PR Storybook
 
-# only trigger on pull request closed events
 on:
   pull_request:
     types: [closed]
@@ -20,10 +19,9 @@ jobs:
           if [ -d "${PR_DIR}" ]
           then
             echo "::set-output name=pr_dir_exists::true"
-            echo "true"
           else
             echo "::set-output name=pr_dir_exists::false"
-            echo "false"
+            echo "${PR_DIR}/ does not exist"
           fi
         env:
           PR_DIR: pr-${{ github.event.number }}
@@ -33,9 +31,7 @@ jobs:
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions"
-          ls
           git rm -r ./pr-${PR}
-          git status
           git commit -m "chore: remove PR #${PR} storybook instance"
           git push origin gh-pages
         env:

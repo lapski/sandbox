@@ -21,9 +21,9 @@ jobs:
         run: |
           if [ -d "${PR_DIR}" ]
           then
-            echo "::set-output name=value::deployed"
-          else
             echo "::set-output name=value::updated"
+          else
+            echo "::set-output name=value::deployed"
           fi
         env:
           PR_DIR: pr-${{ github.event.number }}
